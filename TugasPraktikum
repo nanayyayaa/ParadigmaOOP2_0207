@@ -1,0 +1,100 @@
+#include <iostream>
+using namespace std;
+
+// Abstract Base Class
+class RekeningBank {
+protected:
+    int saldo;
+
+public:
+    RekeningBank(int saldoAwal) {
+        saldo = saldoAwal;
+    }
+
+    void tampilkanInfo() {
+        cout << "Saldo Terkini : Rp " << saldo << endl;
+    }
+
+    // Pure Virtual Function
+    virtual void potongAdmin() = 0;
+};
+
+// Class Rekening Syariah
+class RekeningSyariah : public RekeningBank {
+public:
+    RekeningSyariah(int saldoAwal)
+        : RekeningBank(saldoAwal) {
+    }
+
+    void potongAdmin() {
+        cout << "Rekening Syariah bebas biaya admin" << endl;
+    }
+};
+
+// Class Rekening Konvensional
+class RekeningKonvensional : public RekeningBank {
+public:
+    RekeningKonvensional(int saldoAwal)
+        : RekeningBank(saldoAwal) {
+    }
+
+    void potongAdmin() {
+        saldo = saldo - 15000;
+        cout << "Biaya admin Rp 15.000 dipotong" << endl;
+    }
+};
+
+// Class Rekening Premium
+class RekeningPremium : public RekeningBank {
+public:
+    RekeningPremium(int saldoAwal)
+        : RekeningBank(saldoAwal) {
+    }
+
+    void potongAdmin() {
+
+        if (saldo > 10000000) {
+            cout << "Bebas biaya admin karena saldo di atas 10 juta" << endl;
+        }
+        else {
+            saldo = saldo - 50000;
+            cout << "Biaya admin Rp 50.000 dipotong" << endl;
+        }
+    }
+};
+
+int main() {
+
+    RekeningBank *r1 = new RekeningSyariah(5000000);
+    RekeningBank *r2 = new RekeningKonvensional(3000000);
+    RekeningBank *r3 = new RekeningPremium(8000000);
+    RekeningBank *r4 = new RekeningPremium(15000000);
+
+    cout << "=== Rekening Syariah ===" << endl;
+    r1->tampilkanInfo();
+    r1->potongAdmin();
+    r1->tampilkanInfo();
+
+    cout << endl;
+
+    cout << "=== Rekening Konvensional ===" << endl;
+    r2->tampilkanInfo();
+    r2->potongAdmin();
+    r2->tampilkanInfo();
+
+    cout << endl;
+
+    cout << "=== Rekening Premium 1 ===" << endl;
+    r3->tampilkanInfo();
+    r3->potongAdmin();
+    r3->tampilkanInfo();
+
+    cout << endl;
+
+    cout << "=== Rekening Premium 2 ===" << endl;
+    r4->tampilkanInfo();
+    r4->potongAdmin();
+    r4->tampilkanInfo();
+
+    return 0;
+}
